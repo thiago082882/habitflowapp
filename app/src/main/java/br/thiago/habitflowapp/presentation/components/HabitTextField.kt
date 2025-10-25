@@ -6,7 +6,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import br.thiago.habitflowapp.presentation.ui.theme.onBackgroundLight
 import br.thiago.habitflowapp.presentation.ui.theme.outlineLight
@@ -15,8 +14,8 @@ import br.thiago.habitflowapp.presentation.ui.theme.primaryContainerLight
 
 @Composable
 fun HabitTextField(
-    value: TextFieldValue,
-    onValueChange: (TextFieldValue) -> Unit,
+    value: String,
+    onValueChange: (value: String) -> Unit,
     label: String,
     modifier: Modifier = Modifier,
     readOnly: Boolean = false,
@@ -45,7 +44,7 @@ fun HabitTextField(
 @Composable
 private fun HabitTextFieldPreview() {
     HabitTextField(
-        value = TextFieldValue(""),
+        value = "",
         onValueChange = {},
         label = "Nome do Hábito"
 

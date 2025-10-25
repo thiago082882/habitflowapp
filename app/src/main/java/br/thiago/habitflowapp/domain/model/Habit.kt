@@ -1,8 +1,6 @@
-package br.thiago.habitflowapp.models
+package br.thiago.habitflowapp.domain.model
 
-import br.thiago.habitflowapp.domain.model.FrequencyType
 import com.google.gson.Gson
-import java.util.UUID
 
 /**
  * Modelo de Dados principal para representar um Hábito no HabitFlow.
@@ -16,21 +14,22 @@ import java.util.UUID
  * @property reminderTime Horário do lembrete (Ex: "08:00").
  * @property isReminderActive Indica se o lembrete está ativado.
  * @property selectedDays Array booleano de 7 posições (Domingo a Sábado) para frequência SPECIFIC.
- * @property userId ID do usuário proprietário do hábito.
+ * @property idUser ID do usuário proprietário do hábito.
  * @property createdAt Timestamp de criação do hábito.
  */
 data class Habit(
-    val id: String = UUID.randomUUID().toString(),
-    val name: String,
+    var id: String = "",
+    val name: String = "",
     val description: String = "",
     val goal: String = "",
     val streak: Int = 0,
     val completed: Boolean = false,
     val frequency: FrequencyType = FrequencyType.DAILY,
     val reminderTime: String = "",
-    val isReminderActive: Boolean = false,
+    val active: Boolean = false,
     val selectedDays: List<Boolean> = listOf(true, true, true, true, true, true, true),
-    val userId: String = "",
+    val idUser: String = "",
+    var user: User? = null,
     val createdAt: Long = System.currentTimeMillis()
 ) {
     fun toJson(): String = Gson().toJson(
@@ -43,14 +42,18 @@ data class Habit(
             completed = completed,
             frequency = frequency,
             reminderTime = reminderTime,
-            isReminderActive = isReminderActive,
+            active = active,
             selectedDays = selectedDays,
-            userId = userId,
+            idUser = idUser,
+            User(
+                id = user?.id ?: "",
+                email = user?.email ?: "",
+            ),
             createdAt = createdAt
         )
     )
 
     companion object {
-        fun fromJson(data: String): Habit1 = Gson().fromJson(data, Habit1::class.java)
+        fun fromJson(data: String): Habit = Gson().fromJson(data, Habit::class.java)
     }
 }

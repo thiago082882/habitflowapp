@@ -1,9 +1,12 @@
 package br.thiago.habitflowapp.di
 
+import br.thiago.habitflowapp.core.Constants.HABIT
 import br.thiago.habitflowapp.core.Constants.USERS
 import br.thiago.habitflowapp.data.repository.AuthRepositoryImpl
+import br.thiago.habitflowapp.data.repository.HabitRepositoryImpl
 import br.thiago.habitflowapp.data.repository.UsersRepositoryImpl
 import br.thiago.habitflowapp.domain.repository.AuthRepository
+import br.thiago.habitflowapp.domain.repository.HabitRepository
 import br.thiago.habitflowapp.domain.repository.UsersRepository
 import br.thiago.habitflowapp.domain.use_cases.auth.AuthUseCases
 import br.thiago.habitflowapp.domain.use_cases.auth.ForgotPassword
@@ -11,7 +14,16 @@ import br.thiago.habitflowapp.domain.use_cases.auth.GetCurrentUser
 import br.thiago.habitflowapp.domain.use_cases.auth.Login
 import br.thiago.habitflowapp.domain.use_cases.auth.Logout
 import br.thiago.habitflowapp.domain.use_cases.auth.Signup
+import br.thiago.habitflowapp.domain.use_cases.habits.CreateHabit
+import br.thiago.habitflowapp.domain.use_cases.habits.DeleteHabit
+import br.thiago.habitflowapp.domain.use_cases.habits.GetHabitById
+import br.thiago.habitflowapp.domain.use_cases.habits.GetHabits
+import br.thiago.habitflowapp.domain.use_cases.habits.GetHabitsByIdUser
+import br.thiago.habitflowapp.domain.use_cases.habits.HabitsUseCases
+import br.thiago.habitflowapp.domain.use_cases.habits.ToggleHabitUseCase
+import br.thiago.habitflowapp.domain.use_cases.habits.UpdateHabit
 import br.thiago.habitflowapp.domain.use_cases.users.Create
+import br.thiago.habitflowapp.domain.use_cases.users.GetUserById
 import br.thiago.habitflowapp.domain.use_cases.users.UsersUseCases
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -44,13 +56,13 @@ object AppModule {
     @Named(USERS)
     fun provideUsersRef(db: FirebaseFirestore): CollectionReference = db.collection(USERS)
 
-//    @Provides
-//    @Named(POSTS)
-//    fun provideStoragePostsRef(storage: FirebaseStorage): StorageReference = storage.reference.child(POSTS)
-//
-//    @Provides
-//    @Named(POSTS)
-//    fun providePostsRef(db: FirebaseFirestore): CollectionReference = db.collection(POSTS)
+    @Provides
+    @Named(HABIT)
+    fun provideStorageHabitsRef(storage: FirebaseStorage): StorageReference = storage.reference.child(HABIT)
+
+    @Provides
+    @Named(HABIT)
+    fun provideHabitsRef(db: FirebaseFirestore): CollectionReference = db.collection(HABIT)
 
     @Provides
     fun provideFirebaseAuth(): FirebaseAuth = FirebaseAuth.getInstance()
@@ -61,9 +73,9 @@ object AppModule {
     @Provides
     fun provideUsersRepository(impl: UsersRepositoryImpl): UsersRepository = impl
 
-//    @Provides
-//    fun providePostsRepository(impl: PostRepositoryImpl): PostRepository = impl
-//
+    @Provides
+    fun provideHabitsRepository(impl: HabitRepositoryImpl): HabitRepository = impl
+
     @Provides
     fun provideAuthUseCases(repository: AuthRepository) = AuthUseCases(
         getCurrentUser = GetCurrentUser(repository),
@@ -76,18 +88,20 @@ object AppModule {
     @Provides
     fun provideUsersUseCases(repository: UsersRepository) = UsersUseCases(
         create = Create(repository),
+        getUserById = GetUserById(repository),
 
     )
 
-//    @Provides
-//    fun providePostsUseCases(repository: PostRepository) = PostsUseCases(
-//        create = CreatePost(repository),
-//        getPosts = GetPosts(repository),
-//        getPostsByIdUser = GetPostsByIdUser(repository),
-//        deletePost = DeletePost(repository),
-//        updatePost = UpdatePost(repository),
-//        likePost = LikePost(repository),
-//        deleteLikePost = DeleteLikePost(repository)
-//    )
+    @Provides
+    fun provideHabitsUseCases(repository: HabitRepository) =HabitsUseCases(
+        create = CreateHabit(repository),
+        getHabits = GetHabits(repository),
+        getHabitsByIdUser = GetHabitsByIdUser(repository),
+        deleteHabit = DeleteHabit(repository),
+        updateHabit = UpdateHabit(repository),
+        toggleHabitCompletion = ToggleHabitUseCase(repository),
+        getHabitById = GetHabitById(repository)
+
+    )
 
 }

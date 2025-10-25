@@ -1,11 +1,14 @@
 package br.thiago.habitflowapp.presentation.navigation
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import br.thiago.habitflowapp.presentation.screens.forgotPassword.ForgotPasswordScreen
 import br.thiago.habitflowapp.presentation.screens.login.LoginScreen
+import br.thiago.habitflowapp.presentation.screens.login.LoginViewModel
 import br.thiago.habitflowapp.presentation.screens.signUp.RegisterScreen
 
 fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
@@ -15,18 +18,25 @@ fun NavGraphBuilder.authNavGraph(navController: NavHostController) {
     ) {
 
         composable(route = AuthScreen.Login.route) {
-           LoginScreen(
-               onLoginClick = {
-                   navController.navigate(Graph.HOME)
-               },
-               onForgotPasswordClick = {
-                   navController.navigate(AuthScreen.Forgot.route)
-               },
-               onRegisterClick = {
-                   navController.navigate(AuthScreen.Signup.route)
-               }
-           )
+            val viewModel: LoginViewModel = hiltViewModel()
+            val currentUser = viewModel.currentUser
+
+            if (currentUser == null) {
+                LoginScreen(
+                    onLoginClick = { navController.navigate(Graph.HOME) },
+                    onForgotPasswordClick = { navController.navigate(AuthScreen.Forgot.route) },
+                    onRegisterClick = { navController.navigate(AuthScreen.Signup.route) },
+                    viewModel = viewModel
+                )
+            } else {
+                LaunchedEffect(Unit) {
+                    navController.navigate(Graph.HOME) {
+                        popUpTo(Graph.AUTHENTICATION) { inclusive = true }
+                    }
+                }
+            }
         }
+
 
         composable(route = AuthScreen.Signup.route) {
 

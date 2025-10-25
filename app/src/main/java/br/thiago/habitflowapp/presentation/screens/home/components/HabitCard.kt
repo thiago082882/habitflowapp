@@ -2,30 +2,19 @@ package br.thiago.habitflowapp.presentation.screens.home.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
@@ -34,7 +23,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun  HabitCard(
+fun HabitCard(
     modifier: Modifier = Modifier,
     title: String,
     subtitle: String? = null,
@@ -43,13 +32,22 @@ fun  HabitCard(
     textColor: Color = Color(0xFF1C1C1C),
     showCheckIcon: Boolean = true,
     buttonLabel: String? = null,
-    onClick: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null,       // Editar hábito
+    onToggleClick: (() -> Unit)? = null, // Marcar/desmarcar
+    onLongClick: (() -> Unit)? = null
 ) {
     Card(
         modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 5.dp)
-            .then(if (onClick != null) Modifier.clickable { onClick() } else Modifier),
+            .then(
+                Modifier.pointerInput(Unit) {
+                    detectTapGestures(
+                        onTap = { onClick?.invoke() },      // Clique no card = editar
+                        onLongPress = { onLongClick?.invoke() }
+                    )
+                }
+            ),
         shape = RoundedCornerShape(14.dp),
         colors = CardDefaults.cardColors(containerColor = Color.White),
         elevation = CardDefaults.cardElevation(defaultElevation = 1.5.dp)
@@ -100,21 +98,23 @@ fun  HabitCard(
                     .size(34.dp)
                     .clip(CircleShape)
                     .border(2.dp, borderColor, CircleShape)
-                    .background(Color.White),
+                    .background(if (completed) borderColor else Color.White)
+                    .pointerInput(Unit) {
+                        detectTapGestures(onTap = { onToggleClick?.invoke() })
+                    },
                 contentAlignment = Alignment.Center
             ) {
                 when {
                     buttonLabel != null -> Text(
                         text = buttonLabel,
-                        color = borderColor,
+                        color = if (completed) Color.White else borderColor,
                         fontWeight = FontWeight.Bold,
                         fontSize = 12.sp
                     )
-
                     showCheckIcon -> Icon(
                         imageVector = Icons.Default.Check,
                         contentDescription = "Completo",
-                        tint = borderColor,
+                        tint = if (completed) Color.White else borderColor,
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -122,6 +122,7 @@ fun  HabitCard(
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
@@ -136,7 +137,8 @@ private fun CustomCardPreview() {
             subtitle = "Streak: 12 dias",
             completed = true,
             borderColor = Color(0xFF2196F3),
-            onClick = {}
+            onClick = {},
+            onLongClick = {}
         )
 
         HabitCard(
@@ -144,7 +146,8 @@ private fun CustomCardPreview() {
             subtitle = "Freq: 3 dias por semana (SQS)",
             borderColor = Color(0xFFF1C40F),
             buttonLabel = "OK",
-            onClick = {}
+            onClick = {},
+            onLongClick = {}
         )
     }
 }

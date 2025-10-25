@@ -1,33 +1,64 @@
+
 package br.thiago.habitflowapp.presentation.screens.home
 
-import androidx.compose.foundation.layout.*
+
+import android.annotation.SuppressLint
+import android.app.Activity
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import br.thiago.habitflowapp.domain.model.FrequencyType
-import br.thiago.habitflowapp.models.Habit1
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.navigation.NavHostController
+import br.thiago.habitflowapp.domain.model.Habit
+import br.thiago.habitflowapp.domain.model.Response
+import br.thiago.habitflowapp.presentation.components.WelcomeDialog
+import br.thiago.habitflowapp.presentation.navigation.AuthScreen.Login
+import br.thiago.habitflowapp.presentation.navigation.Screen
 import br.thiago.habitflowapp.presentation.screens.home.components.HabitCard
 import br.thiago.habitflowapp.presentation.screens.home.components.ProgressCard
 import br.thiago.habitflowapp.presentation.screens.home.components.TodayHeader
 import br.thiago.habitflowapp.presentation.ui.theme.primaryContainerLight
 import br.thiago.habitflowapp.presentation.ui.theme.primaryLight
+import br.thiago.habitflowapp.presentation.utils.RequestNotificationPermission
 
+@SuppressLint("ContextCastToActivity")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TodayScreen(
-    habits: List<Habit1>,
-    onToggleHabit: (Habit1) -> Unit,
-    onAddHabitClick: () -> Unit
+    navController: NavHostController,
+    onToggleHabit: (Habit) -> Unit = {},
+    onAddHabitClick: () -> Unit = {},
+    viewModel: HabitsViewModel = hiltViewModel(),
 ) {
+    val activity = LocalContext.current as? Activity
+
+    RequestNotificationPermission()
+
+    val state = viewModel.state
+
+    val habits = (state.habitsResponse as? Response.Success)?.data ?: emptyList()
+
     Scaffold(
         floatingActionButton = {
             FloatingActionButton(
@@ -39,6 +70,9 @@ fun TodayScreen(
             }
         }
     ) { paddingValues ->
+
+
+
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -46,8 +80,28 @@ fun TodayScreen(
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             item {
+                if (viewModel.welcomeMessage.isNotEmpty()) {
+                    WelcomeDialog(
+                        message = viewModel.welcomeMessage,
+                        onDismiss = { viewModel.welcomeMessage = "" }
+                    )
+                }
                 Spacer(modifier = Modifier.height(8.dp))
-                TodayHeader()
+                TodayHeader(
+                    onLogoutClick = {
+//                        viewModel.logout()
+//                        activity?.finish()
+//                        activity?.startActivity(Intent(activity, MainActivity::class.java))
+
+                        viewModel.logout()
+                        navController.navigate(Login.route) {
+                            popUpTo(0) {
+                                inclusive = true
+                            }
+                        }
+
+                    }
+                )
                 HorizontalDivider(
                     modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp),
                     color = MaterialTheme.colorScheme.surfaceVariant
@@ -57,9 +111,9 @@ fun TodayScreen(
             item {
                 ProgressCard(
                     title = "Progresso do Dia",
-                    progressPercent = 67,
-                    completed = 2,
-                    total = 3,
+                    progressPercent = state.progressPercent,
+                    completed = state.completedHabits,
+                    total = state.totalHabits,
                     containerColor = primaryContainerLight.copy(alpha = 0.4f),
                     accentColor = primaryLight
                 )
@@ -74,28 +128,24 @@ fun TodayScreen(
                 )
             }
 
-            items(habits) { habit ->
+            items(habits, key = { it.id }) { habit ->
                 HabitCard(
                     title = habit.name,
-                    subtitle = if (habit.name.contains("Estudar", ignoreCase = true))
-                        "Freq: 3 dias por semana (SQS)"
-                    else
-                        "Streak: ${habit.streak} dias",
+                    subtitle = habit.description,
                     completed = habit.completed,
-                    borderColor = when {
-                        habit.completed -> primaryContainerLight
-                        habit.name.contains("", ignoreCase = true) -> Color(0xFFF1C40F)
-                        else -> MaterialTheme.colorScheme.primary
-                    },
-                    buttonLabel = if (habit.name.contains(
-                            "Estudar",
-                            ignoreCase = true
-                        )
-                    ) "OK" else null,
-                    onClick = { onToggleHabit(habit) }
-                )
-            }
+                    borderColor = if (habit.completed) Color(0xFF4CAF50) else Color(0xFFF1C40F),
+                    onClick = {
+                      //  navController.navigate(Screen.UpdateHabit.passHabit(habit.id))
 
+                        navController.navigate(
+                            route = Screen.UpdateHabit.passHabit(habit.toJson())
+                        )
+                    },
+                    onToggleClick = { viewModel.toggleHabit(habit) },
+                    onLongClick = { viewModel.deleteHabit(habit.id) }
+                )
+
+            }
 
             item {
                 Spacer(modifier = Modifier.height(24.dp))
@@ -111,40 +161,10 @@ fun TodayScreen(
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                     )
+
                 }
             }
         }
     }
 }
 
-@Preview(showSystemUi = true)
-@Composable
-fun TodayScreenPreview() {
-    val habits = listOf(
-        Habit1(
-            name = "Beber Água (8 copos)",
-            frequency = FrequencyType.DAILY,
-            completed = true,
-            streak = 12
-        ),
-        Habit1(
-            name = "Estudar Programação (30 min)",
-            frequency = FrequencyType.WEEKLY,
-            completed = false,
-            streak = 0
-        ),
-        Habit1(
-            name = "Caminhada (10 mins)",
-            frequency = FrequencyType.DAILY,
-            completed = true,
-            streak = 7
-        )
-    )
-
-
-    TodayScreen(
-        habits = habits,
-        onToggleHabit = {},
-        onAddHabitClick = {}
-    )
-}
