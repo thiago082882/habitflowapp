@@ -37,6 +37,7 @@ import br.thiago.habitflowapp.presentation.navigation.AuthScreen.Login
 import br.thiago.habitflowapp.presentation.navigation.Screen
 import br.thiago.habitflowapp.presentation.screens.home.components.HabitCard
 import br.thiago.habitflowapp.presentation.screens.home.components.ProgressCard
+import br.thiago.habitflowapp.presentation.screens.home.components.SwipeableHabitCard
 import br.thiago.habitflowapp.presentation.screens.home.components.TodayHeader
 import br.thiago.habitflowapp.presentation.ui.theme.primaryContainerLight
 import br.thiago.habitflowapp.presentation.ui.theme.primaryLight
@@ -129,23 +130,23 @@ fun TodayScreen(
             }
 
             items(habits, key = { it.id }) { habit ->
-                HabitCard(
-                    title = habit.name,
-                    subtitle = habit.description,
-                    completed = habit.completed,
-                    borderColor = if (habit.completed) Color(0xFF4CAF50) else Color(0xFFF1C40F),
-                    onClick = {
-                      //  navController.navigate(Screen.UpdateHabit.passHabit(habit.id))
-
-                        navController.navigate(
-                            route = Screen.UpdateHabit.passHabit(habit.toJson())
-                        )
-                    },
-                    onToggleClick = { viewModel.toggleHabit(habit) },
-                    onLongClick = { viewModel.deleteHabit(habit.id) }
-                )
-
+                SwipeableHabitCard(
+                    habit = habit,
+                    onDelete = { viewModel.deleteHabit(it.id) }
+                ) {
+                    HabitCard(
+                        title = habit.name,
+                        subtitle = habit.description,
+                        completed = habit.completed,
+                        borderColor = if (habit.completed) Color(0xFF4CAF50) else Color(0xFFF1C40F),
+                        onClick = { navController.navigate(Screen.UpdateHabit.passHabit(habit.toJson())) },
+                        onToggleClick = { viewModel.toggleHabit(habit) },
+                        onLongClick = { viewModel.deleteHabit(habit.id) }
+                    )
+                }
             }
+
+
 
             item {
                 Spacer(modifier = Modifier.height(24.dp))

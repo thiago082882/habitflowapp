@@ -32,8 +32,8 @@ fun HabitCard(
     textColor: Color = Color(0xFF1C1C1C),
     showCheckIcon: Boolean = true,
     buttonLabel: String? = null,
-    onClick: (() -> Unit)? = null,       // Editar hábito
-    onToggleClick: (() -> Unit)? = null, // Marcar/desmarcar
+    onClick: (() -> Unit)? = null,
+    onToggleClick: (() -> Unit)? = null,
     onLongClick: (() -> Unit)? = null
 ) {
     Card(
@@ -43,7 +43,7 @@ fun HabitCard(
             .then(
                 Modifier.pointerInput(Unit) {
                     detectTapGestures(
-                        onTap = { onClick?.invoke() },      // Clique no card = editar
+                        onTap = { onClick?.invoke() },
                         onLongPress = { onLongClick?.invoke() }
                     )
                 }
