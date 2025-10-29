@@ -135,7 +135,7 @@ fun RegisterScreen(
             PrimaryButton(
                 text = "Cadastrar",
                 { viewModel.onSignup() },
-                enabled = viewModel.isEnabledLoginButton
+                enabled = viewModel.isEnabledSignupButton
             )
 
             Text(

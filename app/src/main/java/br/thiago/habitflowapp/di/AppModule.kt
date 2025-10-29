@@ -30,13 +30,20 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.remoteConfig
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import jakarta.inject.Qualifier
 import javax.inject.Named
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import javax.inject.Singleton
+
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -47,6 +54,15 @@ object AppModule {
 
     @Provides
     fun provideFirebaseStorage(): FirebaseStorage = FirebaseStorage.getInstance()
+
+    @Provides
+    fun provideFirebaseRemoteConfig(): FirebaseRemoteConfig = Firebase.remoteConfig
+
+
+
+//    @Provides
+//    @Singleton
+//    fun provideCoroutineDispatcher(): CoroutineDispatcher = Dispatchers.IO
 
     @Provides
     @Named(USERS)

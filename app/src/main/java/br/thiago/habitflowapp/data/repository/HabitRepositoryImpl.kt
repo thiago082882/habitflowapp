@@ -8,6 +8,7 @@ import br.thiago.habitflowapp.domain.model.User
 import br.thiago.habitflowapp.domain.repository.HabitRepository
 import br.thiago.habitflowapp.domain.model.Habit
 import com.google.firebase.firestore.CollectionReference
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -57,7 +58,6 @@ class HabitRepositoryImpl @Inject constructor(
                                 }
                             }
 
-                            Log.d("PostsRepositoryImpl", "Id: ${id}")
                         }
                     }.forEach {
                         it.await()
@@ -65,7 +65,8 @@ class HabitRepositoryImpl @Inject constructor(
 
                     Response.Success(habits)
                 } else {
-                    Response.Failure(e)
+//                    Response.Failure(e)
+                Response.Failure(e as? Exception)
                 }
                 trySend(postsResponse)
             }

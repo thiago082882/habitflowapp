@@ -1,6 +1,5 @@
 package br.thiago.habitflowapp.presentation.screens.signUp
 
-import android.util.Patterns
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -45,7 +44,7 @@ class SignupViewModel @Inject constructor(private val authUseCases: AuthUseCases
         private set
 
     // ENABLE BUTTON
-    var isEnabledLoginButton by mutableStateOf(false)
+    var isEnabledSignupButton by mutableStateOf(false)
         private set
 
     var signupResponse by mutableStateOf<Response<FirebaseUser>?>(null)
@@ -84,7 +83,7 @@ class SignupViewModel @Inject constructor(private val authUseCases: AuthUseCases
     }
 
     fun enabledLoginButton() {
-        isEnabledLoginButton =
+        isEnabledSignupButton =
             isEmailValid &&
                     isPasswordValid &&
                     isconfirmPassword
@@ -93,7 +92,7 @@ class SignupViewModel @Inject constructor(private val authUseCases: AuthUseCases
 
     fun validateEmail() {
         // É UM EMAIL VALIDO
-        if (Patterns.EMAIL_ADDRESS.matcher(state.email).matches()) {
+        if (isValidEmail(state.email)) {
             isEmailValid = true
             emailErrMsg = ""
         }
@@ -105,18 +104,18 @@ class SignupViewModel @Inject constructor(private val authUseCases: AuthUseCases
         enabledLoginButton()
     }
 
-    fun validatePassword() {
-        if (state.password.length >= 6) {
-            isPasswordValid = true
-            passwordErrMsg = ""
-        }
-        else {
-            isPasswordValid = false
-            passwordErrMsg = "Ao menos 6 caracteres"
-        }
-
-        enabledLoginButton()
-    }
+//    fun validatePassword() {
+//        if (state.password.length >= 6) {
+//            isPasswordValid = true
+//            passwordErrMsg = ""
+//        }
+//        else {
+//            isPasswordValid = false
+//            passwordErrMsg = "Ao menos 6 caracteres"
+//        }
+//
+//        enabledLoginButton()
+//    }
 
     fun validateConfirmPassword() {
         if (state.password == state.confirmPassword) {
@@ -128,6 +127,28 @@ class SignupViewModel @Inject constructor(private val authUseCases: AuthUseCases
             confirmPasswordErrMsg = "As senhas não coincidem"
         }
         enabledLoginButton()
+    }
+
+    fun validatePassword() {
+        val password = state.password
+
+        val passwordRegex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#\$%^&+=!]).{8,}\$")
+
+        if (passwordRegex.matches(password)) {
+            isPasswordValid = true
+            passwordErrMsg = ""
+        } else {
+            isPasswordValid = false
+            passwordErrMsg = "Senha deve ter pelo menos 8 caracteres, incluir maiúscula, minúscula, número e caractere especial"
+        }
+
+        enabledLoginButton()
+    }
+
+     fun isValidEmail(email: String): Boolean {
+        // Regex leve e segura para validar formato de email
+        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
+        return Regex(emailRegex).matches(email)
     }
 
 

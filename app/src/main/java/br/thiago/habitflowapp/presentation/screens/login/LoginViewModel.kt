@@ -1,6 +1,6 @@
 package br.thiago.habitflowapp.presentation.screens.login
 
-import android.util.Patterns
+
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +12,10 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases): ViewModel() {
+class LoginViewModel @Inject constructor(
+
+    private val authUseCases: AuthUseCases
+): ViewModel() {
 
     // STATE FORM
     var state by mutableStateOf(LoginState())
@@ -37,9 +40,6 @@ class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases)
 
     // LOGIN RESPONSE
     var loginResponse by mutableStateOf<Response<FirebaseUser>?>(null)
-        private set
-
-
 
 
     val currentUser = authUseCases.getCurrentUser()
@@ -70,7 +70,7 @@ class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases)
 
     fun validateEmail() {
         // É UM EMAIL VÁLIDO
-        if (Patterns.EMAIL_ADDRESS.matcher(state.email).matches()) {
+        if (isValidEmail(state.email)) {
             isEmailValid = true
             emailErrMsg = ""
         }
@@ -83,16 +83,26 @@ class LoginViewModel @Inject constructor(private val authUseCases: AuthUseCases)
     }
 
     fun validatePassword() {
-        if (state.password.length >= 6) {
+        val password = state.password
+
+        if (password.length >= 8) {
             isPasswordValid = true
             passwordErrMsg = ""
-        }
-        else {
+        } else {
             isPasswordValid = false
-            passwordErrMsg = "Ao  menos 6 caracteres"
+            passwordErrMsg = "Ao menos 8 caracteres"
         }
 
         enabledLoginButton()
     }
+
+
+
+
+    private fun isValidEmail(email: String): Boolean {
+        val emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$"
+        return Regex(emailRegex).matches(email)
+    }
+
 
 }
