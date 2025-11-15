@@ -112,7 +112,7 @@ Rode o projeto no Android Studio.
 
 ## 🎥 Video
 
-
+https://www.linkedin.com/posts/thiagocostadejesus_habitflow-jetpackcompose-haerbitos-share-7395609221460819968-lREJ?utm_source=share&utm_medium=member_desktop&rcm=ACoAABppADcBraOOr94u61-tO7piJW4T75ULG4k
 
 ------------------------------------------------------------------------
 
