@@ -91,7 +91,6 @@ Com camadas Presentation, Domain, Data e DI.
 -   Controle de progresso\
 -   Lembretes configuráveis\
 -   Edição de lembretes\
--   notificações diárias,semanais e personalizadas\
 -   Armazenamento no Firebase\
 -   UI moderna e responsiva\
 
