@@ -104,7 +104,7 @@ Rode o projeto no Android Studio.
 
 ## 🎥 Video
 
-(Adicionar quando disponível)
+
 
 ------------------------------------------------------------------------
 
