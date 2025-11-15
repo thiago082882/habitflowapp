@@ -1,4 +1,4 @@
-# HabitFlow App - Jetpack Compose
+# <img align="center"  height="30" width="30" src=""> Habitflow App - Jetpack Compose
 
 ## 📋 Índice
 
@@ -14,6 +14,12 @@
 
 ------------------------------------------------------------------------
 
+<div align="center">
+
+<img src="" width="300">
+
+ </div>
+ 
 ## 🖥 Preview 
 
 <div align="center">
@@ -88,7 +94,7 @@ Com camadas Presentation, Domain, Data e DI.
 
 Clone o repositório:
 
-    git clone https://github.com/SEU_USUARIO/HabitFlow.git
+    git clone https://github.com/thiago082882/habitflowapp.git
 
 Configure o Firebase e adicione o `google-services.json`.
 
