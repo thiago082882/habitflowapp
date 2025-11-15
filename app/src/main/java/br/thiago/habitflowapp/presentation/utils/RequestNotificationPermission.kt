@@ -23,9 +23,9 @@ fun RequestNotificationPermission() {
         contract = ActivityResultContracts.RequestPermission()
     ) { granted ->
         if (granted) {
-           // Toast.makeText(context, "Notificações ativadas 🔔", Toast.LENGTH_SHORT).show()
+
         } else {
-           // Toast.makeText(context, "Permissão negada ⚠️", Toast.LENGTH_SHORT).show()
+
         }
     }
 
@@ -37,7 +37,7 @@ fun RequestNotificationPermission() {
             }
         }
 
-        // Em Android 31+ (API 31 ou 32), pode precisar pedir alarme exato
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
             if (!alarmManager.canScheduleExactAlarms()) {

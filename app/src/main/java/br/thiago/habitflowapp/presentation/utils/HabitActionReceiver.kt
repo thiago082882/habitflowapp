@@ -15,10 +15,10 @@ class HabitActionReceiver : BroadcastReceiver() {
 
         when (intent.action) {
             HabitReminderReceiver.ACTION_SNOOZE -> {
-                // Cancelar notificação atual
+
                 NotificationManagerCompat.from(context).cancel(habitName.hashCode())
 
-                // Re-agendar 10 minutos depois
+
                 val snoozeTimeMillis = System.currentTimeMillis() + 10 * 60 * 1000
                 val snoozeTime = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date(snoozeTimeMillis))
 

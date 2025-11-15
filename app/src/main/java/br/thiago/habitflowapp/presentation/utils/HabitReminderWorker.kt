@@ -12,43 +12,6 @@ import androidx.core.app.NotificationManagerCompat
 import br.thiago.habitflowapp.R
 import br.thiago.habitflowapp.MainActivity
 
-//class HabitReminderReceiver : BroadcastReceiver() {
-//
-//    @RequiresPermission(Manifest.permission.POST_NOTIFICATIONS)
-//    override fun onReceive(context: Context, intent: Intent) {
-//        val habitName = intent.getStringExtra("habitName") ?: return
-//        val habitGoal = intent.getStringExtra("habitGoal") ?: ""
-//        val reminderTime = intent.getStringExtra("reminderTime") ?: ""
-//
-//        // Abre o app ao clicar na notificação
-//        val openAppIntent = Intent(context, MainActivity::class.java)
-//        val pendingIntent = PendingIntent.getActivity(
-//            context,
-//            0,
-//            openAppIntent,
-//            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-//        )
-//
-//
-//        val notification = NotificationCompat.Builder(context, "habit_channel")
-//            .setSmallIcon(R.drawable.ic_time)
-//            .setContentTitle("✨ Lembrete de Hábito")
-//            .setContentText("Está na hora de $habitName! ⏰")
-//            .setStyle(
-//                NotificationCompat.BigTextStyle()
-//                    .bigText("Meta: $habitGoal\nHorário: $reminderTime\n\nMantenha sua rotina e continue evoluindo! 💪")
-//            )
-//            .setColor(Color.parseColor("#6C63FF"))
-//            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//            .setAutoCancel(true)
-//            .setContentIntent(pendingIntent)
-//            .setCategory(NotificationCompat.CATEGORY_REMINDER)
-//            .build()
-//
-//
-//        NotificationManagerCompat.from(context).notify(habitName.hashCode(), notification)
-//    }
-//}
 class HabitReminderReceiver : BroadcastReceiver() {
 
     companion object {
@@ -62,7 +25,7 @@ class HabitReminderReceiver : BroadcastReceiver() {
         val habitGoal = intent.getStringExtra("habitGoal") ?: ""
         val reminderTime = intent.getStringExtra("reminderTime") ?: ""
 
-        // Intent para abrir o app
+
         val openAppIntent = Intent(context, MainActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_SINGLE_TOP or Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
@@ -73,7 +36,7 @@ class HabitReminderReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Intent para adiar
+
         val snoozeIntent = Intent(context, HabitActionReceiver::class.java).apply {
             action = ACTION_SNOOZE
             putExtra("habitName", habitName)
@@ -85,7 +48,7 @@ class HabitReminderReceiver : BroadcastReceiver() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Intent para concluir
+
         val completeIntent = Intent(context, HabitActionReceiver::class.java).apply {
             action = ACTION_COMPLETE
             putExtra("habitName", habitName)
