@@ -1,26 +1,20 @@
-
-# <img align="center"  height="30" width="30" src=""> Habitflow App - Jetpack Compose
-
-<div align="center">
-</div>
+# HabitFlow App - Jetpack Compose
 
 ## 📋 Índice
 
-- [Preview](#-Preview)
-- [Sobre](#-Sobre)
-- [Tecnologias utilizadas](#-Ferramentas-utilizadas)
-- [Biliotecas utilizadas](#-Biliotecas-utilizadas)
+-   [Preview](#-preview-em-andamento)
+-   [Sobre](#-sobre)
+-   [Tecnologias utilizadas](#-ferramentas-utilizadas)
+-   [Bibliotecas utilizadas](#-bibliotecas-utilizadas)
+-   [Arquitetura](#-arquitetura)
+-   [Funcionalidades](#-funcionalidades)
+-   [Como rodar o projeto](#-como-rodar-o-projeto)
+-   [Video](#-video)
+-   [Autor](#-autor)
 
----
+------------------------------------------------------------------------
 
-<div align="center">
-
-<img src="" width="300">
-
-
- </div>
-
-## 🖥 Preview (Em Andamento)
+## 🖥 Preview 
 
 <div align="center">
 
@@ -38,32 +32,76 @@
 
 </div>
 
----
+------------------------------------------------------------------------
 
 ## 📖 Sobre
 
+O HabitFlow é um aplicativo moderno para criação, acompanhamento e
+gestão de hábitos, desenvolvido inteiramente em Jetpack Compose e
+utilizando arquitetura limpa com MVVM, Firebase e Hilt.
 
+------------------------------------------------------------------------
 
 ## 🚀 Ferramentas utilizadas
 
-O projeto foi desenvolvido utilizando as seguintes Ferramentas:
+-   Android Studio
+-   Jetpack Compose
+-   Firebase Console
+-   Gradle Kotlin DSL
+-   Git & GitHub
 
+------------------------------------------------------------------------
 
----
+## 🚀 Bibliotecas utilizadas
 
-## 🚀 Biliotecas utilizadas
+-   Compose BOM
+-   Material 3
+-   Navigation Compose
+-   Firebase Auth / Firestore / Storage
+-   Hilt
+-   Coil Compose
+-   Gson
+-   Splash Screen API
 
-O projeto foi desenvolvido utilizando as seguintes bibliotecas:
+------------------------------------------------------------------------
 
--
--
--
+## 🏛 Arquitetura
 
----
+Clean Architecture + MVVM\
+Com camadas Presentation, Domain, Data e DI.
 
-## 🚀 Video
+------------------------------------------------------------------------
 
+## 🧩 Funcionalidades
 
----
+-   Criação de hábitos diários, semanais e personalizados\
+-   Controle de progresso\
+-   Histórico e streak\
+-   Lembretes configuráveis\
+-   Armazenamento no Firebase\
+-   UI moderna e responsiva\
+-   Tema claro/escuro
 
-Desenvolvido por Thiago Costa de Jesus.
+------------------------------------------------------------------------
+
+## 🛠 Como rodar o projeto
+
+Clone o repositório:
+
+    git clone https://github.com/SEU_USUARIO/HabitFlow.git
+
+Configure o Firebase e adicione o `google-services.json`.
+
+Rode o projeto no Android Studio.
+
+------------------------------------------------------------------------
+
+## 🎥 Video
+
+(Adicionar quando disponível)
+
+------------------------------------------------------------------------
+
+## 👨🏻‍💻 Autor
+
+Thiago Costa de Jesus
