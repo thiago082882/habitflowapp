@@ -66,6 +66,7 @@ utilizando arquitetura limpa com MVVM, Firebase e Hilt.
 -   Firebase Auth / Firestore / Storage/Remote Config
 -   Hilt
 -   Coil Compose
+-  **BroadcastReceiver (para lembretes e notificações locais)** 
 -   Gson
 -   Splash Screen API
 -   Hilt Navigation Compose
