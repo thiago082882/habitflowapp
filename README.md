@@ -68,6 +68,19 @@ utilizando arquitetura limpa com MVVM, Firebase e Hilt.
 -   Coil Compose
 -   Gson
 -   Splash Screen API
+-   Firebase BOM
+-   Firebase Firestore KTX
+-   Firebase Auth KTX
+-   Firebase Remote Config
+-   Firebase Storage KTX
+-   Hilt Navigation Compose
+-   Hilt Android
+-   Coil Compose (Async Images)
+-   JUnit 4
+-   Mockk
+-   Core Testing
+-   Robolectric
+-   Truth
 
 ------------------------------------------------------------------------
 
@@ -82,11 +95,12 @@ Com camadas Presentation, Domain, Data e DI.
 
 -   Criação de hábitos diários, semanais e personalizados\
 -   Controle de progresso\
--   Histórico e streak\
 -   Lembretes configuráveis\
+-   Edição de lembretes\
+-   notificações diárias,semanais e personalizadas\
 -   Armazenamento no Firebase\
 -   UI moderna e responsiva\
--   Tema claro/escuro
+
 
 ------------------------------------------------------------------------
 
