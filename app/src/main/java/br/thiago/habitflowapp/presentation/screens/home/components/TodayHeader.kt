@@ -1,5 +1,6 @@
 package br.thiago.habitflowapp.presentation.screens.home.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,7 +22,9 @@ import java.util.Date
 import java.util.Locale
 
 @Composable
-fun TodayHeader() {
+fun TodayHeader(
+    onLogoutClick: () -> Unit = {}
+) {
     val dateFormat = SimpleDateFormat("EEE, dd MMM", Locale("pt", "BR"))
     val today = dateFormat.format(Date())
 
@@ -53,11 +56,12 @@ fun TodayHeader() {
             )
             Icon(
                 imageVector = Icons.AutoMirrored.Outlined.ExitToApp,
-                contentDescription = "Ir para outro dia",
+                contentDescription = "Sair do app",
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .padding(start = 6.dp)
                     .size(18.dp)
+                    .clickable { onLogoutClick() }
             )
         }
     }

@@ -52,9 +52,11 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation ("androidx.constraintlayout:constraintlayout-compose:1.0.1")
 
     implementation("androidx.compose.material3:material3:1.3.0")
     implementation("androidx.compose.material3:material3-window-size-class:1.3.0")
+
 
 
     // https://developer.android.com/jetpack/compose/navigation?hl=pt-br
@@ -63,24 +65,30 @@ dependencies {
 
     //https://developer.android.com/training/dependency-injection/hilt-android?hl=pt-br#kts
 
-    implementation("com.google.dagger:hilt-android:2.54")
+    implementation(libs.hilt.android)
     implementation ("androidx.hilt:hilt-navigation-compose:1.3.0")
-    kapt("com.google.dagger:hilt-android-compiler:2.54")
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    implementation(libs.androidx.activity)
+
+    //splash screen
+    implementation(libs.androidx.core.splashscreen)
+
+    kapt(libs.hilt.android.compiler)
 
     //  Firebase store configuration
-    implementation (platform("com.google.firebase:firebase-bom:34.4.0"))
+    implementation (libs.firebase.bom)
     implementation ("com.google.firebase:firebase-firestore-ktx:25.0.0")
 
     //Firebase Auth configuration
 
-    implementation ("com.google.firebase:firebase-auth-ktx:23.2.1")
+    implementation (libs.firebase.auth.ktx)
 
+    //
+    implementation (libs.firebase.config)
     // https://firebase.google.com/docs/storage/android/start?hl=pt
 
-    implementation ("com.google.firebase:firebase-storage-ktx:21.0.0")
-
-   // Analytics
-    implementation("com.google.firebase:firebase-analytics")
+    implementation ("com.google.firebase:firebase-storage-ktx:21.0.2")
 
     //JSON
 
@@ -90,8 +98,6 @@ dependencies {
     //Async Image
     implementation("io.coil-kt:coil-compose:2.6.0")
 
-    //   FilenameUtils
-    implementation ("commons-io:commons-io:2.16.1")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

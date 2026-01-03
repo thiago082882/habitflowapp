@@ -53,7 +53,7 @@ fun ReminderTimePicker(
     }
 
     HabitTextField(
-        value = TextFieldValue(reminderTime.ifBlank { "" }),
+        value = reminderTime.ifBlank { "" },
         onValueChange = {},
         label = "",
         readOnly = true,
